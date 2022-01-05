@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private bool hitBlock;
 
-    private SceneManager checkCanNextLevel;
+    private LevelManager checkCanNextLevel;
     private int increaseAmountCollidedBlocks;
 
     private void Start()
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
         playerVisualEffects = GetComponent<PlayerVisualEffects>();
 
         camera = FindObjectOfType<Camera>();
-        checkCanNextLevel = FindObjectOfType<SceneManager>();
+        checkCanNextLevel = FindObjectOfType<LevelManager>();
     }
 
     private void Update()
@@ -38,58 +38,62 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
-        if (inputData.isPressed)
+        if (checkCanNextLevel.isNextLevel)
         {
-            hitBlock = CheckIfHitBlock();
-
-            if (hitBlock)
+            if (inputData.isPressed)
             {
-                return;
+                increaseAmountCollidedBlocks = 0;
+
+                hitBlock = CheckIfHitBlock();
+
+                if (hitBlock)
+                {
+                    return;
+                }
+
+                clickedPosition = camera.ScreenToWorldPoint(Input.mousePosition);
+                clickedPosition = new Vector3(clickedPosition.x, clickedPosition.y, 0f);
+
+                ResetPlayerPos();
+
+                playerVisualEffects.SetDotStartPosition(clickedPosition);
+                playerVisualEffects.ChangeDotActiveState(true);
+                playerVisualEffects.ChangeTrailState(false, 0f);
+
+                if (OnMouseClick != null)
+                {
+                    OnMouseClick();
+                }
             }
 
-            clickedPosition = camera.ScreenToWorldPoint(Input.mousePosition);
-            clickedPosition = new Vector3(clickedPosition.x, clickedPosition.y, 0f);
-
-            ResetPlayerPos();
-
-            playerVisualEffects.SetDotStartPosition(clickedPosition);
-            playerVisualEffects.ChangeDotActiveState(true);
-            playerVisualEffects.ChangeTrailState(false, 0f);
-
-            if (OnMouseClick != null)
+            if (inputData.isHeld)
             {
-                OnMouseClick();
-            }
-        }
+                if (hitBlock)
+                {
+                    return;
+                }
 
-        if (inputData.isHeld)
-        {
-            if (hitBlock)
-            {
-                return;
+                playerVisualEffects.SetDotPos(clickedPosition, camera.ScreenToWorldPoint(Input.mousePosition));
+                playerVisualEffects.MakeBallPulse();
             }
 
-            playerVisualEffects.SetDotPos(clickedPosition, camera.ScreenToWorldPoint(Input.mousePosition));
-            playerVisualEffects.MakeBallPulse();
-        }
-
-        if (inputData.isReleased)
-        {
-            if (hitBlock)
+            if (inputData.isReleased)
             {
-                return;
+                if (hitBlock)
+                {
+                    return;
+                }
+
+                releasePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+                releasePosition = new Vector3(releasePosition.x, releasePosition.y, 0f);
+
+                playerVisualEffects.ChangeDotActiveState(false);
+                playerVisualEffects.ResetBallSize();
+                playerVisualEffects.ChangeTrailState(true, 0.75f);
+
+                CalculateDirection();
+                MovePlayerInDirection();
             }
-
-            releasePosition = camera.ScreenToWorldPoint(Input.mousePosition);
-            releasePosition = new Vector3(releasePosition.x, releasePosition.y, 0f);
-            Debug.Log(releasePosition);
-
-            playerVisualEffects.ChangeDotActiveState(false);
-            playerVisualEffects.ResetBallSize();
-            playerVisualEffects.ChangeTrailState(true, 0.75f);
-
-            CalculateDirection();
-            MovePlayerInDirection();
         }
     }
 
@@ -121,6 +125,14 @@ public class PlayerController : MonoBehaviour
             increaseAmountCollidedBlocks++;
             checkCanNextLevel.NextLevel(checkCanNextLevel.blockCountInScene, increaseAmountCollidedBlocks);
         }
+
+        if (collision.gameObject.CompareTag("BlockWall"))
+        {
+            Vector2 wallNormal = collision.contacts[0].normal;
+            direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
+
+            rigidbody2D.velocity = direction * moveSpeed;
+        }
     }
 
     private bool CheckIfHitBlock()
@@ -130,6 +142,4 @@ public class PlayerController : MonoBehaviour
 
         return hitBlock;
     }
-
-    /// Corotine
 }

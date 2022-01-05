@@ -11,10 +11,8 @@ public class Block : MonoBehaviour
         {
             OnBeingHit();
         }
-        // Desabilitar o spriteRenderer do object. Pois se clicar em cima do object ele pode começar sumido.
 
-        //gameObject.SetActive(false);
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<Collider2D>().isTrigger = true;
     }
 }
