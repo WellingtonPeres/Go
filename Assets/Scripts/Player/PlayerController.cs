@@ -19,12 +19,16 @@ public class PlayerController : MonoBehaviour
 
     private bool hitBlock;
 
+    private SceneManager checkCanNextLevel;
+    private int increaseAmountCollidedBlocks;
+
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         playerVisualEffects = GetComponent<PlayerVisualEffects>();
 
         camera = FindObjectOfType<Camera>();
+        checkCanNextLevel = FindObjectOfType<SceneManager>();
     }
 
     private void Update()
@@ -113,6 +117,9 @@ public class PlayerController : MonoBehaviour
             direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
 
             rigidbody2D.velocity = direction * moveSpeed;
+
+            increaseAmountCollidedBlocks++;
+            checkCanNextLevel.NextLevel(checkCanNextLevel.blockCountInScene, increaseAmountCollidedBlocks);
         }
     }
 
@@ -123,4 +130,6 @@ public class PlayerController : MonoBehaviour
 
         return hitBlock;
     }
+
+    /// Corotine
 }

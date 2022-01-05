@@ -35,10 +35,17 @@ public class BlockManager : MonoBehaviour
     {
         foreach (Block block in blockArray)
         {
-            if (block.gameObject.activeSelf == false)
+            //if (block.gameObject.activeSelf == false)
+            //{
+            //    // Habilitar o spriteRenderer do object. Pois se clicar em cima do object ele pode começar sumido.
+
+            //    //block.gameObject.SetActive(true);
+            //}
+
+            if (block.gameObject.GetComponent<SpriteRenderer>().enabled == false)
             {
-                // Habilitar o spriteRenderer do object. Pois se clicar em cima do object ele pode começar sumido.
-                block.gameObject.SetActive(true);
+                block.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                block.gameObject.GetComponent<Collider2D>().enabled = true;
             }
         }
 
