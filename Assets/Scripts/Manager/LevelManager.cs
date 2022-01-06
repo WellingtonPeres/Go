@@ -16,36 +16,54 @@ public class LevelManager : MonoBehaviour
 
     [Header("Can Start Game")]
     public bool isNextLevel;
-    private int atualScene;
+
+    private int actualScene;
     private int lastScenes;
 
     private void Awake()
     {
+        actualScene = SceneManager.GetActiveScene().buildIndex;
         lastScenes = SceneManager.sceneCountInBuildSettings - 1;
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (PlayerPrefs.HasKey("SaveScene"))
+            {
+                actualScene = PlayerPrefs.GetInt("SaveScene");
+                SceneManager.LoadScene(actualScene);
+            }
+            else
+            {
+                actualScene = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadScene(actualScene + 1);
+            }
+        }
     }
 
     void Start()
     {
+        SaveGame("SaveScene", actualScene);
+
         isNextLevel = false;
         blockCountInScene = FindObjectsOfType<Block>().Length;
 
         fadeInOut.gameObject.SetActive(true);
         SetTextMeshProUGUI();
-
+        
         StartCoroutine("WaitForStartGame");
     }
 
     private void SetTextMeshProUGUI()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
         {
             return;
         }
         else
         {
-            atualScene = SceneManager.GetActiveScene().buildIndex;
-            numberLevelText.text = atualScene.ToString();
+            numberLevelText.text = actualScene.ToString();
             numberLevelText.gameObject.SetActive(true);
+            
         }
     }
 
@@ -63,26 +81,21 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        if (atualScene == lastScenes)
+        if (actualScene == lastScenes)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
-        else
-        {
-            SceneManager.LoadScene(atualScene + 1);
-        }
+        SceneManager.LoadScene(actualScene + 1);
     }
 
     IEnumerator WaitForStartGame()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
         isNextLevel = true;
     }
+
+    private void SaveGame(string keyName, int value)
+    {
+        PlayerPrefs.SetInt(keyName, value);
+    }
 }
-
-//    //if (PlayerPrefs.HasKey("scenes"))
-//    //{
-//    //    scenesIndex = PlayerPrefs.GetInt("scenes");
-//    //}
-
-//    //PlayerPrefs.SetInt("scenes", scenesIndex);
