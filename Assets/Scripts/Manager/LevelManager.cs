@@ -14,8 +14,15 @@ public class LevelManager : MonoBehaviour
     [Header("Automatic Count")]
     public int blockCountInScene;
 
+    [Header("Can Start Game")]
     public bool isNextLevel;
     private int atualScene;
+    private int lastScenes;
+
+    private void Awake()
+    {
+        lastScenes = SceneManager.sceneCountInBuildSettings - 1;
+    }
 
     void Start()
     {
@@ -30,9 +37,16 @@ public class LevelManager : MonoBehaviour
 
     private void SetTextMeshProUGUI()
     {
-        atualScene = SceneManager.GetActiveScene().buildIndex;
-        numberLevelText.text = atualScene.ToString();
-        numberLevelText.gameObject.SetActive(true);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            return;
+        }
+        else
+        {
+            atualScene = SceneManager.GetActiveScene().buildIndex;
+            numberLevelText.text = atualScene.ToString();
+            numberLevelText.gameObject.SetActive(true);
+        }
     }
 
     public void NextLevel(int BlockCountInScene, int AmountBlocksCollider)
@@ -49,7 +63,14 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        SceneManager.LoadScene(atualScene + 1);
+        if (atualScene == lastScenes)
+        {
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            SceneManager.LoadScene(atualScene + 1);
+        }
     }
 
     IEnumerator WaitForStartGame()
@@ -58,3 +79,10 @@ public class LevelManager : MonoBehaviour
         isNextLevel = true;
     }
 }
+
+//    //if (PlayerPrefs.HasKey("scenes"))
+//    //{
+//    //    scenesIndex = PlayerPrefs.GetInt("scenes");
+//    //}
+
+//    //PlayerPrefs.SetInt("scenes", scenesIndex);
