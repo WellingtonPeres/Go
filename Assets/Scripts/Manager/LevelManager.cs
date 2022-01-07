@@ -85,7 +85,10 @@ public class LevelManager : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
-        SceneManager.LoadScene(actualScene + 1);
+        else
+        {
+            SceneManager.LoadScene(actualScene + 1);
+        }
     }
 
     IEnumerator WaitForStartGame()
