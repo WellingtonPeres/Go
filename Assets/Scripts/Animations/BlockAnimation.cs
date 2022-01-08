@@ -49,7 +49,7 @@ public class BlockAnimation : MonoBehaviour
 
         if (isChildrenRotation)
         {
-            children.transform.Rotate(0, 0, rotationChildrenSpeed * Time.deltaTime, Space.Self);
+            children.transform.Rotate(0, 0, rotationChildrenSpeed * Time.deltaTime, Space.World);
         }
     }
 }

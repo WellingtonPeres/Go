@@ -114,7 +114,7 @@ MonoBehaviour:
   currentPoint: 0
   isRotation: 0
   rotationSpeed: 0
-  children: {fileID: 0}
+  children: {fileID: 8324228309424335515}
   isChildrenRotation: 0
   rotationChildrenSpeed: 0
 --- !u!1 &8324228309424335515
@@ -128,7 +128,6 @@ GameObject:
   - component: {fileID: 4630742593053536113}
   - component: {fileID: 8324228309424335514}
   - component: {fileID: 4205159657228737496}
-  - component: {fileID: 2464014726377972593}
   m_Layer: 0
   m_Name: BlockCircleWall
   m_TagString: BlockWall
@@ -222,11 +221,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!222 &2464014726377972593
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8324228309424335515}
-  m_CullTransparentMesh: 1

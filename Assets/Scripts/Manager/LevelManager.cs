@@ -20,28 +20,12 @@ public class LevelManager : MonoBehaviour
     private int actualScene;
     private int lastScenes;
 
-    private void Awake()
+    void Start()
     {
         actualScene = SceneManager.GetActiveScene().buildIndex;
         lastScenes = SceneManager.sceneCountInBuildSettings - 1;
 
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            if (PlayerPrefs.HasKey("SaveScene"))
-            {
-                actualScene = PlayerPrefs.GetInt("SaveScene");
-                SceneManager.LoadScene(actualScene);
-            }
-            else
-            {
-                actualScene = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(actualScene + 1);
-            }
-        }
-    }
-
-    void Start()
-    {
+        LoadGame();
         SaveGame("SaveScene", actualScene);
 
         isNextLevel = false;
@@ -100,5 +84,22 @@ public class LevelManager : MonoBehaviour
     private void SaveGame(string keyName, int value)
     {
         PlayerPrefs.SetInt(keyName, value);
+    }
+
+    private void LoadGame()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (PlayerPrefs.HasKey("SaveScene"))
+            {
+                actualScene = PlayerPrefs.GetInt("SaveScene");
+                SceneManager.LoadScene(actualScene);
+            }
+            else
+            {
+                actualScene = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadScene(actualScene + 1);
+            }
+        }
     }
 }
