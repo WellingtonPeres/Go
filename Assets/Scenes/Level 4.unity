@@ -1077,6 +1077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeInOut: {fileID: 1732252707}
   imageFadeInOut: {fileID: 1732252709}
+  textThanks: {fileID: 1065321622}
   numberLevelText: {fileID: 1065321620}
   blockCountInScene: 0
   isNextLevel: 0

@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     [Header("Transition Between Scenes")]
     public Image fadeInOut;
     public Animator imageFadeInOut;
+    public Animator textThanks;
     public TextMeshProUGUI numberLevelText;
 
     [Header("Automatic Count")]
@@ -45,9 +46,17 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            if (actualScene == lastScenes)
+            {
+                textThanks.gameObject.SetActive(true);
+                textThanks.SetBool("Thanks", true);
+                numberLevelText.text = "Thanks for Playing!";
+                print("Agradecer!");
+                return;
+            }
+
             numberLevelText.text = actualScene.ToString();
             numberLevelText.gameObject.SetActive(true);
-            
         }
     }
 

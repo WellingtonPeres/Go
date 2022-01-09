@@ -1173,7 +1173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5027280406611006463, guid: a57490d66d6db45478a81c1391bc1611, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.4772
+      value: 1.9079146
       objectReference: {fileID: 0}
     - target: {fileID: 5027280406611006463, guid: a57490d66d6db45478a81c1391bc1611, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1267,6 +1267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeInOut: {fileID: 1732252707}
   imageFadeInOut: {fileID: 1732252709}
+  textThanks: {fileID: 1065321622}
   numberLevelText: {fileID: 1065321620}
   blockCountInScene: 0
   isNextLevel: 0
