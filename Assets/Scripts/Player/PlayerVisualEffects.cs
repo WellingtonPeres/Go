@@ -31,7 +31,7 @@ public class PlayerVisualEffects : MonoBehaviour
 
     void Start()
     {
-        dotGap = 1f / dotAmount; // percentage of one dot relative to whole
+        dotGap = 1f / dotAmount;
 
         trailRenderer = GetComponentInChildren<TrailRenderer>();
 

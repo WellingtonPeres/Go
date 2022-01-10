@@ -5,7 +5,7 @@ public class Block : MonoBehaviour
 {
     public event Action OnBeingHit;
 
-    private ParticleSystem particleSystem;
+    public ParticleSystem particleSystem;
 
     private void Start()
     {

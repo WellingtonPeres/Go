@@ -24,6 +24,7 @@ public class BlockManager : MonoBehaviour
         }
 
         FindObjectOfType<PlayerController>().OnMouseClick += ResetAllBlocks;
+
     }
 
     void DecreaseBlockCount()
@@ -39,6 +40,7 @@ public class BlockManager : MonoBehaviour
             {
                 block.gameObject.GetComponent<SpriteRenderer>().enabled = true;
                 block.gameObject.GetComponent<Collider2D>().isTrigger = false;
+                block.gameObject.GetComponentInChildren<ParticleSystem>().Stop();
             }
         }
 
