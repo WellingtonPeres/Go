@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleMovement();
+        StopPlayerPosition();
     }
 
     void HandleMovement()
@@ -94,6 +95,17 @@ public class PlayerController : MonoBehaviour
                 CalculateDirection();
                 MovePlayerInDirection();
             }
+        }
+    }
+
+    void StopPlayerPosition()
+    {
+        if (transform.position.x > 50 && transform.position.x < 55 ||
+            transform.position.x < -50 && transform.position.x > -55 ||
+            transform.position.y > 35 && transform.position.y < 45 ||
+            transform.position.y < -35 && transform.position.y > -45)
+        {
+            rigidbody2D.velocity = Vector2.zero;
         }
     }
 

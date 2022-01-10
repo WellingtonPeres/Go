@@ -29,6 +29,16 @@ public class LevelManager : MonoBehaviour
         LoadGame();
         SaveGame("SaveScene", actualScene);
 
+        //if (actualScene == lastScenes)
+        //{
+        //    actualScene = 1;
+        //    SaveGame("SaveScene", actualScene);
+        //}
+        //else
+        //{
+        //    SaveGame("SaveScene", actualScene);
+        //}
+
         isNextLevel = false;
         blockCountInScene = FindObjectsOfType<Block>().Length;
 
@@ -79,7 +89,7 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadScene(1);
         }
         else
-        {
+        {   
             SceneManager.LoadScene(actualScene + 1);
         }
     }
