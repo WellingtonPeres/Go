@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private LevelManager checkCanNextLevel;
     private int increaseAmountCollidedBlocks;
 
+    private AudioSource startSceneSFX;
+
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -29,6 +31,14 @@ public class PlayerController : MonoBehaviour
 
         camera = FindObjectOfType<Camera>();
         checkCanNextLevel = FindObjectOfType<LevelManager>();
+
+        startSceneSFX = GetComponent<AudioSource>();
+        Invoke("StartSceneFSX", 0.5f);
+    }
+
+    private void StartSceneFSX()
+    {
+        startSceneSFX.Play();
     }
 
     private void Update()

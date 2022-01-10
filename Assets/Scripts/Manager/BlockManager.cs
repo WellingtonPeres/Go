@@ -24,7 +24,6 @@ public class BlockManager : MonoBehaviour
         }
 
         FindObjectOfType<PlayerController>().OnMouseClick += ResetAllBlocks;
-
     }
 
     void DecreaseBlockCount()
