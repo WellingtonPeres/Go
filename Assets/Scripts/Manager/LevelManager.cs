@@ -27,17 +27,7 @@ public class LevelManager : MonoBehaviour
         lastScenes = SceneManager.sceneCountInBuildSettings - 1;
 
         LoadGame();
-        SaveGame("SaveScene", actualScene);
-
-        //if (actualScene == lastScenes)
-        //{
-        //    actualScene = 1;
-        //    SaveGame("SaveScene", actualScene);
-        //}
-        //else
-        //{
-        //    SaveGame("SaveScene", actualScene);
-        //}
+        ReloadGameWhenFishGame();
 
         isNextLevel = false;
         blockCountInScene = FindObjectsOfType<Block>().Length;
@@ -100,11 +90,6 @@ public class LevelManager : MonoBehaviour
         isNextLevel = true;
     }
 
-    private void SaveGame(string keyName, int value)
-    {
-        PlayerPrefs.SetInt(keyName, value);
-    }
-
     private void LoadGame()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
@@ -119,6 +104,23 @@ public class LevelManager : MonoBehaviour
                 actualScene = SceneManager.GetActiveScene().buildIndex;
                 SceneManager.LoadScene(actualScene + 1);
             }
+        }
+    }
+
+    private void SaveGame(string keyName, int value)
+    {
+        PlayerPrefs.SetInt(keyName, value);
+    }
+
+    private void ReloadGameWhenFishGame()
+    {
+        if (actualScene == lastScenes)
+        {
+            SaveGame("SaveScene", 1);
+        }
+        else
+        {
+            SaveGame("SaveScene", actualScene);
         }
     }
 }
