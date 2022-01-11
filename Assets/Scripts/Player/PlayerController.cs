@@ -16,29 +16,26 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidbody2D;
     private Camera camera;
     private PlayerVisualEffects playerVisualEffects;
+    private Collider2D collider2D;
 
     private bool hitBlock;
 
     private LevelManager checkCanNextLevel;
     private int increaseAmountCollidedBlocks;
 
-    private AudioSource startSceneSFX;
+    private AudioSource startPlaySFX;
 
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         playerVisualEffects = GetComponent<PlayerVisualEffects>();
+        collider2D = GetComponent<Collider2D>();
 
         camera = FindObjectOfType<Camera>();
         checkCanNextLevel = FindObjectOfType<LevelManager>();
 
-        startSceneSFX = GetComponent<AudioSource>();
-        Invoke("StartSceneFSX", 0.5f);
-    }
-
-    private void StartSceneFSX()
-    {
-        startSceneSFX.Play();
+        startPlaySFX = GetComponent<AudioSource>();
+        Invoke("StartPlayFSX", 0.5f);
     }
 
     private void Update()
@@ -47,12 +44,40 @@ public class PlayerController : MonoBehaviour
         StopPlayerPosition();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            Vector2 wallNormal = collision.contacts[0].normal;
+            direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
+
+            rigidbody2D.velocity = direction * moveSpeed;
+
+            increaseAmountCollidedBlocks++;
+            checkCanNextLevel.NextLevel(checkCanNextLevel.blockCountInScene, increaseAmountCollidedBlocks);
+
+            SFXManager.instance.PlaySFX();
+        }
+
+        if (collision.gameObject.CompareTag("BlockWall"))
+        {
+            Vector2 wallNormal = collision.contacts[0].normal;
+            direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
+
+            rigidbody2D.velocity = direction * moveSpeed;
+
+            SFXManager.instance.PlaySFX();
+        }
+    }
+
     void HandleMovement()
     {
         if (checkCanNextLevel.isNextLevel)
         {
             if (inputData.isPressed)
             {
+                collider2D.enabled = false;
+
                 increaseAmountCollidedBlocks = 0;
 
                 hitBlock = CheckIfHitBlock();
@@ -90,6 +115,8 @@ public class PlayerController : MonoBehaviour
 
             if (inputData.isReleased)
             {
+                Invoke("ActivePlayerCollider2D", 0.1F);
+
                 if (hitBlock)
                 {
                     return;
@@ -106,6 +133,16 @@ public class PlayerController : MonoBehaviour
                 MovePlayerInDirection();
             }
         }
+    }
+
+    void ActivePlayerCollider2D()
+    {
+        collider2D.enabled = true;
+    }
+
+    private void StartPlayFSX()
+    {
+        startPlaySFX.Play();
     }
 
     void StopPlayerPosition()
@@ -133,28 +170,6 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = clickedPosition;
         rigidbody2D.velocity = Vector3.zero;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Block"))
-        {
-            Vector2 wallNormal = collision.contacts[0].normal;
-            direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
-
-            rigidbody2D.velocity = direction * moveSpeed;
-
-            increaseAmountCollidedBlocks++;
-            checkCanNextLevel.NextLevel(checkCanNextLevel.blockCountInScene, increaseAmountCollidedBlocks);
-        }
-
-        if (collision.gameObject.CompareTag("BlockWall"))
-        {
-            Vector2 wallNormal = collision.contacts[0].normal;
-            direction = Vector2.Reflect(rigidbody2D.velocity, wallNormal).normalized;
-
-            rigidbody2D.velocity = direction * moveSpeed;
-        }
     }
 
     private bool CheckIfHitBlock()

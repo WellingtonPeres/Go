@@ -87,6 +87,7 @@ MonoBehaviour:
   children: {fileID: 7605374964806385539}
   isChildrenRotation: 0
   rotationChildrenSpeed: 0
+  expandAmount: 2
 --- !u!1 &1001287417081602249
 GameObject:
   m_ObjectHideFlags: 0

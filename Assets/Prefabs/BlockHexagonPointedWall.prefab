@@ -252,3 +252,4 @@ MonoBehaviour:
   children: {fileID: 5266257539260219417}
   isChildrenRotation: 0
   rotationChildrenSpeed: 0
+  expandAmount: 2
