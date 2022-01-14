@@ -50,8 +50,9 @@ public class LevelManager : MonoBehaviour
             {
                 textThanks.gameObject.SetActive(true);
                 textThanks.SetBool("Thanks", true);
-                numberLevelText.text = "Thanks for Playing!";
-                print("Agradecer!");
+                numberLevelText.text = "Obrigado por Jogar!" +
+                                        "\nThanks for Playing!" +
+                                        "\nGracias por jugar!";
                 return;
             }
 
