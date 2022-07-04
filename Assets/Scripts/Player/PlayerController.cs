@@ -5,6 +5,10 @@ public class PlayerController : MonoBehaviour
 {
     public event Action OnMouseClick;
 
+    [Header("Mudar posição ao ultrapassar o limite da câmera")]
+    public bool invertPosition;
+
+    [Space]
     public InputData inputData;
     public LayerMask layerToCollideWith;
     public float moveSpeed;
@@ -42,6 +46,20 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         StopPlayerPosition();
+
+        ChangeTheTrajectoryOfTheBall(invertPosition);
+    }
+
+    private void ChangeTheTrajectoryOfTheBall(bool canInvertPosition)
+    {
+        if (canInvertPosition)
+        {
+            Vector3 porcentagem = Camera.main.WorldToViewportPoint(transform.position);
+            if (porcentagem.x > 1 || porcentagem.x < 0 || porcentagem.y > 1 || porcentagem.y < 0)
+            {
+                transform.position = -transform.position;
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -94,7 +112,7 @@ public class PlayerController : MonoBehaviour
 
                 playerVisualEffects.SetDotStartPosition(clickedPosition);
                 playerVisualEffects.ChangeDotActiveState(true);
-                playerVisualEffects.ChangeTrailState(false, 0f);
+                playerVisualEffects.StopCoroutine("WaitForDrawTrail");
 
                 if (OnMouseClick != null)
                 {
@@ -127,7 +145,7 @@ public class PlayerController : MonoBehaviour
 
                 playerVisualEffects.ChangeDotActiveState(false);
                 playerVisualEffects.ResetBallSize();
-                playerVisualEffects.ChangeTrailState(true, 0.75f);
+                playerVisualEffects.StartCoroutine("WaitForDrawTrail");
 
                 CalculateDirection();
                 MovePlayerInDirection();

@@ -19,6 +19,10 @@ public class PlayerVisualEffects : MonoBehaviour
     public float expandAmount;
     public float expandSpeed;
 
+    [Space]
+    [Header("Draw Trail Ball")]
+    public GameObject trailPrefabs;
+
     private Vector3 startSize;
     private Vector3 targetSize;
     private float scrollAmount;
@@ -27,13 +31,9 @@ public class PlayerVisualEffects : MonoBehaviour
 
     private GameObject[] dotArray;
 
-    private TrailRenderer trailRenderer;
-
     void Start()
     {
         dotGap = 1f / dotAmount;
-
-        trailRenderer = GetComponentInChildren<TrailRenderer>();
 
         InitPulseEffectVariables();
         SpawnDots();
@@ -66,8 +66,7 @@ public class PlayerVisualEffects : MonoBehaviour
 
             float smoothSpeed = (1f - followCurve.Evaluate(i * dotGap)) * followSpeed;
 
-            //dotArray[i].transform.position = targetPosition;
-
+            dotArray[i].transform.position = targetPosition;
             dotArray[i].transform.position = Vector2.Lerp(dotPosition, targetPosition, smoothSpeed * Time.deltaTime);
         }
     }
@@ -103,9 +102,12 @@ public class PlayerVisualEffects : MonoBehaviour
         scrollAmount = 0;
     }
 
-    public void ChangeTrailState(bool emitting, float time)
+    IEnumerator WaitForDrawTrail()
     {
-        trailRenderer.emitting = emitting;
-        trailRenderer.time = time;
+        while (true)
+        {
+            yield return new WaitForSeconds(.1f);
+            Instantiate(trailPrefabs, transform.position, Quaternion.identity);
+        }
     }
 }
