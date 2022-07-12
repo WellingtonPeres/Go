@@ -46,7 +46,10 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         StopPlayerPosition();
+    }
 
+    private void FixedUpdate()
+    {
         ChangeTheTrajectoryOfTheBall(invertPosition);
     }
 
