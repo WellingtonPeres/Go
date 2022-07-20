@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ba7e9cbda2b6944be2decc38386700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertPosition: 0
+  invertPosition: 1
   inputData: {fileID: 11400000, guid: c627967fddd721b4491e2eb6d04b94c4, type: 2}
   layerToCollideWith:
     serializedVersion: 2
